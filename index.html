@@ -100,7 +100,7 @@
                 { w: 'etnaruatseR', h: 'remoC' }, { w: 'aicamraF', h: 'otnemacideM' }, { w: 'odacremrepuS', h: 'sarpmoC' }, 
                 { w: 'oesnM', h: 'airotsiH' }, { w: 'oidatsE', h: 'ocilbúP' }, { w: 'ocnaB', h: 'oreniD' },
                 { w: 'ocirC', h: 'ayasP' }, { w: 'ocigóolooZ', h: 'elaminA' }, { w: 'arudrep', h: 'artxE' },
-                { w: 'anicifO', h: 'ojabarT' }, { w: 'elcraC', h: 'sajieR' }
+                { w: 'anicifO', h: 'ojabarT' }, { w: 'elbac-orteM', h: 'atla' }
             ],
             Transporte: [
                 { w: 'nóivA', h: 'raloV' }, { w: 'ehcoC', h: 'areterraC' }, { w: 'ocraB', h: 'raM' },
@@ -155,6 +155,16 @@
             decoded.Aleatorio = allItems;
             return decoded;
         };
+
+        // --- COMPONENTE WARMCONTAINER (MOVIDO FUERA) ---
+        // Al sacarlo fuera del componente principal, React no lo recrea en cada render
+        // y se mantiene el foco de los inputs.
+        const WarmContainer = ({ children, className = "" }) => (
+            <div className={`min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 text-slate-800 flex flex-col items-center justify-center p-4 font-sans select-none ${className}`}>
+                <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none"></div>
+                {children}
+            </div>
+        );
 
         function ImpostorGame() {
             const [DB, setDB] = useState(null);
@@ -215,13 +225,6 @@
             const revealImpostor = () => { if (timerInterval) clearInterval(timerInterval); setGameState('result'); };
             const resetGame = () => { setGameState('setup'); if (timerInterval) clearInterval(timerInterval); };
             const formatTime = (s) => `${Math.floor(s / 60)}:${(s % 60).toString().padStart(2, '0')}`;
-
-            const WarmContainer = ({ children, className = "" }) => (
-                <div className={`min-h-screen bg-gradient-to-br from-orange-50 via-amber-50 to-orange-100 text-slate-800 flex flex-col items-center justify-center p-4 font-sans select-none ${className}`}>
-                    <div className="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-[0.03] pointer-events-none"></div>
-                    {children}
-                </div>
-            );
 
             // Si la DB no ha cargado, mostrar loading
             if (!DB) return <WarmContainer><div className="animate-pulse font-bold text-orange-500">Cargando palabras...</div></WarmContainer>;
